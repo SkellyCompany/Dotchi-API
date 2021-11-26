@@ -1,4 +1,4 @@
-export interface DotchiStatistics {
+export interface DotchiStatisticsDTO {
 	health: number;
 	happiness: number;
 }
