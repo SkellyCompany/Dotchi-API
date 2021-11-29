@@ -1,3 +1,5 @@
+import { HumidityService } from './../../services/humidity.service';
+import { MetricDTO } from './../../domain/dtos/metric/metric.dto';
 import { Controller, Inject } from '@nestjs/common';
 import {
 	ClientMqtt,
@@ -10,11 +12,12 @@ import {
 @Controller()
 export class HumidityMqttController {
 	constructor(
-		@Inject('MQTT_CLIENT') private client: ClientMqtt
+		@Inject('MQTT_CLIENT') private client: ClientMqtt,
+		private readonly humidityService: HumidityService,
 	) { }
 
 	@MessagePattern('humidity')
-	update(@Payload() data: any, @Ctx() context: MqttContext) {
-		console.log(data);
+	update(@Payload() metric: MetricDTO, @Ctx() context: MqttContext) {
+		this.humidityService.update(metric);
 	}
 }

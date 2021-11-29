@@ -6,15 +6,18 @@ import {
 	MqttContext,
 	Payload,
 } from '@nestjs/microservices'
+import { MetricDTO } from 'src/domain/dtos/metric/metric.dto';
+import { TemperatureService } from 'src/services/temperature.service';
 
 @Controller()
 export class TemperatureMqttController {
 	constructor(
-		@Inject('MQTT_CLIENT') private client: ClientMqtt
+		@Inject('MQTT_CLIENT') private client: ClientMqtt,
+		private readonly temperatureService: TemperatureService,
 	) { }
 
 	@MessagePattern('temperature')
-	update(@Payload() data: any, @Ctx() context: MqttContext) {
-		console.log(data); console.log(data);
+	update(@Payload() metric: MetricDTO, @Ctx() context: MqttContext) {
+		this.temperatureService.update(metric);
 	}
 }
