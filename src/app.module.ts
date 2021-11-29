@@ -1,3 +1,4 @@
+import { SocketClient } from './clients/socket.client';
 import { SoundIntensityService } from './services/sound-intensity.service';
 import { LightIntensityService } from './services/light-intensity.service';
 import { HumidityService } from './services/humidity.service';
@@ -42,6 +43,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ]),
   ],
   controllers: [AppController, TemperatureMqttController, HumidityMqttController, LightIntensityMqttController, SoundIntensityMqttController],
-  providers: [AppService, TemperatureService, HumidityService, LightIntensityService, SoundIntensityService],
+  providers: [AppService, TemperatureService, HumidityService, LightIntensityService, SoundIntensityService, SocketClient],
 })
 export class AppModule { }
