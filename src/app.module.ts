@@ -1,3 +1,7 @@
+import { SoundIntensityMqttController } from './entry/mqtt/sound-intensity.mqtt.controller';
+import { LightIntensityMqttController } from './entry/mqtt/light-intensity.mqtt.controller';
+import { HumidityMqttController } from './entry/mqtt/humidity.mqtt.controller';
+import { TemperatureMqttController } from './entry/mqtt/temperature.mqtt.controller';
 import { Dotchi, DotchiSchema } from './domain/schemas/dotchi/dotchi.schema';
 import { Log, LogSchema } from './domain/schemas/log/log.schema';
 import { Module } from '@nestjs/common';
@@ -20,7 +24,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ),
 
     // MQTT
-    // HiveMQ
     ClientsModule.register([
       {
         name: 'MQTT_CLIENT',
@@ -34,7 +37,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       },
     ]),
   ],
-  controllers: [AppController],
+  controllers: [AppController, TemperatureMqttController, HumidityMqttController, LightIntensityMqttController, SoundIntensityMqttController],
   providers: [AppService],
 })
 export class AppModule { }
