@@ -14,7 +14,7 @@ export class LightIntensityMqttController {
 	) { }
 
 	@MessagePattern('lightIntensity')
-	lightIntensityUpdate(@Payload() data: any, @Ctx() context: MqttContext) {
+	update(@Payload() data: any, @Ctx() context: MqttContext) {
 		console.log(data);
 	}
 }

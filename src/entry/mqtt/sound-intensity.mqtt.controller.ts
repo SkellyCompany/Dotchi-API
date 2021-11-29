@@ -14,7 +14,7 @@ export class SoundIntensityMqttController {
 	) { }
 
 	@MessagePattern('soundIntensity')
-	soundIntensityUpdate(@Payload() data: any, @Ctx() context: MqttContext) {
+	update(@Payload() data: any, @Ctx() context: MqttContext) {
 		console.log(data);
 	}
 }

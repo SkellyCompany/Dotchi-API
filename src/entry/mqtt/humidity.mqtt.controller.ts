@@ -14,7 +14,7 @@ export class HumidityMqttController {
 	) { }
 
 	@MessagePattern('humidity')
-	humidityUpdate(@Payload() data: any, @Ctx() context: MqttContext) {
+	update(@Payload() data: any, @Ctx() context: MqttContext) {
 		console.log(data);
 	}
 }

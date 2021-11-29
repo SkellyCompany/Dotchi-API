@@ -14,7 +14,7 @@ export class TemperatureMqttController {
 	) { }
 
 	@MessagePattern('temperature')
-	temperatureUpdate(@Payload() data: any, @Ctx() context: MqttContext) {
+	update(@Payload() data: any, @Ctx() context: MqttContext) {
 		console.log(data); console.log(data);
 	}
 }

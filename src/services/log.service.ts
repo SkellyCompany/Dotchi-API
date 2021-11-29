@@ -9,7 +9,7 @@ export class LogService {
     console.log();
   }
 
-  getAll(): Promise<Log[]>  {
+  getAll(): Promise<Log[]> {
     return null;
   }
 }
