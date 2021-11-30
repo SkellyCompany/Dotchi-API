@@ -14,6 +14,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './entry/http/app.controller';
 import { AppService } from './services/app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { LogService } from './services/log.service';
 
 @Module({
   imports: [
@@ -43,6 +44,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ]),
   ],
   controllers: [AppController, TemperatureMqttController, HumidityMqttController, LightIntensityMqttController, SoundIntensityMqttController],
-  providers: [AppService, TemperatureService, HumidityService, LightIntensityService, SoundIntensityService, SocketClient],
+  providers: [AppService, TemperatureService, HumidityService, LightIntensityService, SoundIntensityService, LogService, SocketClient],
 })
 export class AppModule { }
