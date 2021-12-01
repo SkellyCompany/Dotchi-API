@@ -1,3 +1,4 @@
+import { AppGateway } from './entry/socket/app.gateway';
 import { DotchiService } from './services/dotchi.service';
 import { SocketClient } from './clients/socket.client';
 import { SoundIntensityMqttController } from './entry/mqtt/sound-intensity.mqtt.controller';
@@ -40,6 +41,6 @@ import { LogService } from './services/log.service';
     ]),
   ],
   controllers: [AppController, TemperatureMqttController, HumidityMqttController, LightIntensityMqttController, SoundIntensityMqttController],
-  providers: [DotchiService, LogService, SocketClient],
+  providers: [AppGateway, DotchiService, LogService, SocketClient],
 })
 export class AppModule { }
