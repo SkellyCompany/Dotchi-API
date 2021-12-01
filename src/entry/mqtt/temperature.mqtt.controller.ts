@@ -1,3 +1,4 @@
+import { DotchiService } from './../../services/dotchi.service';
 import { Controller, Inject } from '@nestjs/common';
 import {
 	ClientMqtt,
@@ -7,17 +8,16 @@ import {
 	Payload,
 } from '@nestjs/microservices'
 import { MetricDTO } from 'src/domain/dtos/metric/metric.dto';
-import { TemperatureService } from 'src/services/temperature.service';
 
 @Controller()
 export class TemperatureMqttController {
 	constructor(
 		@Inject('MQTT_CLIENT') private client: ClientMqtt,
-		private readonly temperatureService: TemperatureService,
+		private readonly dotchiService: DotchiService,
 	) { }
 
 	@MessagePattern('temperature')
 	update(@Payload() metric: MetricDTO, @Ctx() context: MqttContext) {
-		this.temperatureService.update(metric);
+		this.dotchiService.updateTemperature(metric);
 	}
 }

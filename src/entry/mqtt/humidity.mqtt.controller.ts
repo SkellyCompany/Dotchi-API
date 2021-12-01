@@ -1,4 +1,4 @@
-import { HumidityService } from './../../services/humidity.service';
+import { DotchiService } from './../../services/dotchi.service';
 import { MetricDTO } from './../../domain/dtos/metric/metric.dto';
 import { Controller, Inject } from '@nestjs/common';
 import {
@@ -13,11 +13,11 @@ import {
 export class HumidityMqttController {
 	constructor(
 		@Inject('MQTT_CLIENT') private client: ClientMqtt,
-		private readonly humidityService: HumidityService,
+		private readonly dotchiService: DotchiService,
 	) { }
 
 	@MessagePattern('humidity')
 	update(@Payload() metric: MetricDTO, @Ctx() context: MqttContext) {
-		this.humidityService.update(metric);
+		this.dotchiService.updateHumidity(metric);
 	}
 }

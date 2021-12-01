@@ -1,4 +1,4 @@
-import { SoundIntensityService } from './../../services/sound-intensity.service';
+import { DotchiService } from './../../services/dotchi.service';
 import { Controller, Inject } from '@nestjs/common';
 import {
 	ClientMqtt,
@@ -13,11 +13,11 @@ import { MetricDTO } from 'src/domain/dtos/metric/metric.dto';
 export class SoundIntensityMqttController {
 	constructor(
 		@Inject('MQTT_CLIENT') private client: ClientMqtt,
-		private readonly soundIntensityService: SoundIntensityService,
+		private readonly dotchiService: DotchiService,
 	) { }
 
 	@MessagePattern('soundIntensity')
 	update(@Payload() metric: MetricDTO, @Ctx() context: MqttContext) {
-		this.soundIntensityService.update(metric);
+		this.dotchiService.updateSoundIntensity(metric);
 	}
 }

@@ -12,9 +12,6 @@ export class Dotchi {
 	@Prop()
 	dotchi_id: string;
 
-	@Prop()
-	ass: number;
-
 	@Prop({ type: DotchiStateSchema })
 	state: DotchiState
 

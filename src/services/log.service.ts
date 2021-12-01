@@ -7,21 +7,14 @@ import { Log, LogDocument } from 'src/domain/schemas/log/log.schema';
 @Injectable()
 export class LogService {
   constructor(
-		@InjectModel(Log.name) private logModel: Model<LogDocument>
-	) { }
+    @InjectModel(Log.name) private logModel: Model<LogDocument>
+  ) { }
 
-  insert(log: LogDTO) {
-    this.logModel.create(log);
+  create(log: LogDTO): Promise<Log> {
+    return this.logModel.create(log)
   }
 
-  async getAll(): Promise<Log[]> {
-    try {
-      await this.logModel.find({}, function (err, logs){
-        return logs;
-      });
-    }
-    catch (err) {
-      return null;
-    }
+  getAll(): Promise<Log[]> {
+    return this.logModel.find().exec()
   }
 }

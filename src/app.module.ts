@@ -1,8 +1,5 @@
+import { DotchiService } from './services/dotchi.service';
 import { SocketClient } from './clients/socket.client';
-import { SoundIntensityService } from './services/sound-intensity.service';
-import { LightIntensityService } from './services/light-intensity.service';
-import { HumidityService } from './services/humidity.service';
-import { TemperatureService } from './services/temperature.service';
 import { SoundIntensityMqttController } from './entry/mqtt/sound-intensity.mqtt.controller';
 import { LightIntensityMqttController } from './entry/mqtt/light-intensity.mqtt.controller';
 import { HumidityMqttController } from './entry/mqtt/humidity.mqtt.controller';
@@ -12,7 +9,6 @@ import { Log, LogSchema } from './domain/schemas/log/log.schema';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './entry/http/app.controller';
-import { AppService } from './services/app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { LogService } from './services/log.service';
 
@@ -44,6 +40,6 @@ import { LogService } from './services/log.service';
     ]),
   ],
   controllers: [AppController, TemperatureMqttController, HumidityMqttController, LightIntensityMqttController, SoundIntensityMqttController],
-  providers: [AppService, TemperatureService, HumidityService, LightIntensityService, SoundIntensityService, LogService, SocketClient],
+  providers: [DotchiService, LogService, SocketClient],
 })
 export class AppModule { }

@@ -1,4 +1,4 @@
-import { LightIntensityService } from './../../services/light-intensity.service';
+import { DotchiService } from './../../services/dotchi.service';
 import { Controller, Inject } from '@nestjs/common';
 import {
 	ClientMqtt,
@@ -13,11 +13,11 @@ import { MetricDTO } from 'src/domain/dtos/metric/metric.dto';
 export class LightIntensityMqttController {
 	constructor(
 		@Inject('MQTT_CLIENT') private client: ClientMqtt,
-		private readonly lightIntensityService: LightIntensityService,
+		private readonly dotchiService: DotchiService,
 	) { }
 
 	@MessagePattern('lightIntensity')
 	update(@Payload() metric: MetricDTO, @Ctx() context: MqttContext) {
-		this.lightIntensityService.update(metric);
+		this.dotchiService.updateLightIntensity(metric);
 	}
 }
