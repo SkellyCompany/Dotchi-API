@@ -15,6 +15,10 @@ export class DotchiService {
 		private readonly socketClient: SocketClient,
 	) { }
 
+	get(dotchi_id: string): Promise<Dotchi> {
+		return this.dotchiModel.findOne({ 'dotchi_id': dotchi_id }).exec()
+	}
+
 	updateTemperature(metric: MetricDTO): PromiseLike<Dotchi> {
 		return this.dotchiModel.findOneAndUpdate(
 			{ dotchi_id: metric.dotchi_id },

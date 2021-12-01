@@ -9,9 +9,10 @@ import { Dotchi, DotchiSchema } from './domain/schemas/dotchi/dotchi.schema';
 import { Log, LogSchema } from './domain/schemas/log/log.schema';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AppController } from './entry/http/app.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { LogService } from './services/log.service';
+import { LogController } from './entry/http/log.controller';
+import { DotchiController } from './entry/http/dotchi.controller';
 
 @Module({
   imports: [
@@ -40,7 +41,7 @@ import { LogService } from './services/log.service';
       },
     ]),
   ],
-  controllers: [AppController, TemperatureMqttController, HumidityMqttController, LightIntensityMqttController, SoundIntensityMqttController],
+  controllers: [TemperatureMqttController, HumidityMqttController, LightIntensityMqttController, SoundIntensityMqttController, LogController, DotchiController],
   providers: [AppGateway, DotchiService, LogService, SocketClient],
 })
 export class AppModule { }
