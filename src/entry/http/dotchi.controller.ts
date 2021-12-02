@@ -8,6 +8,7 @@ export class DotchiController {
 
 	@Get('/:id')
 	get(@Param('id') id): Promise<Dotchi> {
+		this.dotchiService.create(id);
 		return this.dotchiService.get(id)
 	}
 }
