@@ -20,6 +20,7 @@ export class LogService {
   }
 
   getAll(dotchi_id: string): Promise<Log[]> {
+    console.log("aaaaaaa");
     return this.logModel.find({ 'dotchi_id': dotchi_id }).exec()
   }
 }
