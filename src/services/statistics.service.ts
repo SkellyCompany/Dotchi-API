@@ -4,11 +4,10 @@ import { Injectable } from '@nestjs/common';
 export class Statisticservice {
   constructor() {
     setInterval(() => {
-      this.test();
+      this.checkMetrics();
     }, 1 * 1000);
   }
 
-  test() {
-    console.log("now");
+  checkMetrics() {
   }
 }

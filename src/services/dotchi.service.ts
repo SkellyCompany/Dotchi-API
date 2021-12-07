@@ -19,6 +19,10 @@ export class DotchiService {
 		return this.dotchiModel.findOne({ 'dotchi_id': dotchi_id }).exec()
 	}
 
+	getAll(): Promise<Dotchi[]> {
+		return this.dotchiModel.find().exec()
+	}
+
 	post(dotchi_id: string): Promise<Dotchi> {
 		return this.dotchiModel.create({ 'dotchi_id': dotchi_id })
 	}
