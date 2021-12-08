@@ -1,6 +1,6 @@
 import { Dotchi } from 'src/domain/schemas/dotchi/dotchi.schema';
 import { DotchiService } from '../../services/dotchi.service';
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
 @Controller('dotchi')
 export class DotchiController {
@@ -13,8 +13,7 @@ export class DotchiController {
 	}
 
 	@Post()
-	post(): Promise<Dotchi> {
-		this.dotchiService.post();
-		return this.dotchiService.post()
+	post(@Body() dotchi: Dotchi): Promise<Dotchi> {
+		return this.dotchiService.post(dotchi)
 	}
 }

@@ -7,6 +7,8 @@ import {
 	Dotchi,
 	DotchiDocument,
 } from 'src/domain/schemas/dotchi/dotchi.schema';
+import { DotchiStatistics } from 'src/domain/schemas/dotchi/dotchi-statistics.schema';
+import { DotchiEnvironment } from 'src/domain/schemas/dotchi/dotchi-environment.schema';
 
 @Injectable()
 export class DotchiService {
@@ -23,8 +25,12 @@ export class DotchiService {
 		return this.dotchiModel.find().exec()
 	}
 
-	post(): Promise<Dotchi> {
-		let dotchi: Dotchi = {dotchi_id: "", metrics: {temperature: 1, humidity: 1, sound_intensity: 1, light_intensity: 1}, environment: {min_temperature: 1, max_temperature:1, min_humidity: 1, max_humidity: 1, min_sound_intensity: 1, max_sound_intensity: 1, min_light_intensity:1, max_light_intensity: 1}, statistics: {health:100, happiness: 12}, state: {alive : true}}
+	post(dotchi: Dotchi): Promise<Dotchi> {
+		const statistics: DotchiStatistics = { health: 100, happiness: 100 };
+		const environment: DotchiEnvironment = { min_temperature: 1, max_temperature: 1, min_humidity: 1, max_humidity: 1,
+		min_light_intensity: 1, max_light_intensity: 1, min_sound_intensity: 1, max_sound_intensity: 1 };
+		
+		dotchi = { dotchi_id: dotchi.dotchi_id, statistics: statistics, environment: environment, metrics: null };
 		return this.dotchiModel.create(dotchi)
 	}
 
