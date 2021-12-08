@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Dotchi } from 'src/domain/schemas/dotchi/dotchi.schema';
 import { DotchiService } from './dotchi.service';
 
 @Injectable()
@@ -18,13 +19,13 @@ export class Statisticservice {
           dotchis[i].metrics.temperature >
             dotchis[i].environment.max_temperature
         ) {
-          console.log('sad temperature');
+
         }
         if (
           dotchis[i].metrics.humidity < dotchis[i].environment.min_humidity ||
           dotchis[i].metrics.humidity > dotchis[i].environment.max_humidity
         ) {
-          console.log('sad humidity');
+
         }
         if (
           dotchis[i].metrics.sound_intensity <
@@ -32,7 +33,7 @@ export class Statisticservice {
           dotchis[i].metrics.sound_intensity >
             dotchis[i].environment.max_sound_intensity
         ) {
-          console.log('sad sound');
+
         }
         if (
           dotchis[i].metrics.light_intensity <
@@ -40,10 +41,9 @@ export class Statisticservice {
           dotchis[i].metrics.light_intensity >
             dotchis[i].environment.max_light_intensity
         ) {
-          console.log('sad light');
+
         }
       }
-      console.log('-----');
     });
   }
 }

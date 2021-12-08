@@ -23,8 +23,9 @@ export class DotchiService {
 		return this.dotchiModel.find().exec()
 	}
 
-	post(dotchi_id: string): Promise<Dotchi> {
-		return this.dotchiModel.create({ 'dotchi_id': dotchi_id })
+	post(): Promise<Dotchi> {
+		let dotchi: Dotchi = {dotchi_id: "", metrics: {temperature: 1, humidity: 1, sound_intensity: 1, light_intensity: 1}, environment: {min_temperature: 1, max_temperature:1, min_humidity: 1, max_humidity: 1, min_sound_intensity: 1, max_sound_intensity: 1, min_light_intensity:1, max_light_intensity: 1}, statistics: {health:100, happiness: 12}, state: {alive : true}}
+		return this.dotchiModel.create(dotchi)
 	}
 
 	updateTemperature(metric: MetricDTO): PromiseLike<Dotchi> {

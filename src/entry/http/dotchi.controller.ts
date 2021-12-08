@@ -12,9 +12,9 @@ export class DotchiController {
 		return this.dotchiService.get(id)
 	}
 
-	@Post('/:id')
-	post(@Param('id') id): Promise<Dotchi> {
-		this.dotchiService.post(id);
-		return this.dotchiService.post(id)
+	@Post()
+	post(): Promise<Dotchi> {
+		this.dotchiService.post();
+		return this.dotchiService.post()
 	}
 }
