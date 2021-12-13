@@ -27,14 +27,14 @@ export class DotchiService {
 
   post(dotchi: Dotchi): Promise<Dotchi> {
     const statistics: DotchiStatistics = { health: 100, happiness: 100 };
-    const min_temperature = Math.random() * (10 - 0) + 0;
-    const max_temperature = Math.random() * (40 - 30) + 30;
-    const min_humidity = Math.random() * (40 - 30) + 30;
-    const max_humidity = Math.random() * (80 - 70) + 70;
-    const min_light_intensity = Math.random() * (25 - 15) + 15;
-    const max_light_intensity = Math.random() * (80 - 70) + 70;
-    const min_sound_intensity = Math.random() * (30 - 25) + 25;
-    const max_sound_intensity = Math.random() * (70 - 60) + 60;
+    const min_temperature = this.random(0, 10);
+    const max_temperature = this.random(30, 40);
+    const min_humidity = this.random(30, 40);
+    const max_humidity = this.random(70, 80);
+    const min_light_intensity = this.random(15, 25);
+    const max_light_intensity = this.random(70, 80);
+    const min_sound_intensity = this.random(25, 30);
+    const max_sound_intensity = this.random(60, 70);
 
     const environment: DotchiEnvironment = {
       min_temperature: min_temperature,
@@ -54,6 +54,10 @@ export class DotchiService {
       metrics: null,
     };
     return this.dotchiModel.create(dotchi);
+  }
+
+  random(min: number, max: number): number {
+    return Math.random() * (max - min) + min;
   }
 
   updateTemperature(metric: MetricDTO): PromiseLike<Dotchi> {
