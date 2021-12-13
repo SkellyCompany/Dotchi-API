@@ -46,7 +46,7 @@ export class DotchiService {
       dotchi_id: id,
       statistics: statistics,
       environment: environment,
-      metrics: null,
+      metrics: {},
     };
     return this.dotchiModel.create(dotchi);
   }
