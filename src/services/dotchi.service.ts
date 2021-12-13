@@ -15,7 +15,7 @@ export class DotchiService {
   constructor(
     @InjectModel(Dotchi.name) private dotchiModel: Model<DotchiDocument>,
     private readonly socketClient: SocketClient,
-  ) { }
+  ) {}
 
   get(dotchi_id: string): Promise<Dotchi> {
     return this.dotchiModel.findOne({ dotchi_id: dotchi_id }).exec();
@@ -26,32 +26,43 @@ export class DotchiService {
   }
 
   post(id: string): Promise<Dotchi> {
-    function random(min: number, max: number): number {
-      return Math.floor(Math.random() * (max - min) + min);
-    }
-
     const statistics: DotchiStatistics = { health: 100, happiness: 100 };
+    const min_temperature = this.random(0, 10);
+    const max_temperature = this.random(30, 40);
+    const min_humidity = this.random(30, 40);
+    const max_humidity = this.random(70, 80);
+    const min_light_intensity = this.random(15, 25);
+    const max_light_intensity = this.random(70, 80);
+    const min_sound_intensity = this.random(25, 30);
+    const max_sound_intensity = this.random(60, 70);
+
     const environment: DotchiEnvironment = {
-      min_temperature: random(0, 10),
-      max_temperature: random(30, 40),
-      min_humidity: random(30, 40),
-      max_humidity: random(70, 80),
-      min_light_intensity: random(15, 25),
-      max_light_intensity: random(70, 80),
-      min_sound_intensity: random(25, 30),
-      max_sound_intensity: random(60, 70),
+      min_temperature: min_temperature,
+      max_temperature: max_temperature,
+      min_humidity: min_humidity,
+      max_humidity: max_humidity,
+      min_light_intensity: min_light_intensity,
+      max_light_intensity: max_light_intensity,
+      min_sound_intensity: min_sound_intensity,
+      max_sound_intensity: max_sound_intensity,
     };
 
     const dotchi = {
       dotchi_id: id,
       statistics: statistics,
       environment: environment,
-      metrics: null,
+      metrics: {},
     };
     return this.dotchiModel.create(dotchi);
   }
 
+  random(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
   updateTemperature(metric: MetricDTO): PromiseLike<Dotchi> {
+    
+    console.log(metric);
     return this.dotchiModel
       .findOneAndUpdate(
         { dotchi_id: metric.dotchi_id },
