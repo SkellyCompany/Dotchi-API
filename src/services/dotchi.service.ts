@@ -4,77 +4,119 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { MetricDTO } from 'src/domain/dtos/metric/metric.dto';
 import {
-	Dotchi,
-	DotchiDocument,
+  Dotchi,
+  DotchiDocument,
 } from 'src/domain/schemas/dotchi/dotchi.schema';
 import { DotchiStatistics } from 'src/domain/schemas/dotchi/dotchi-statistics.schema';
 import { DotchiEnvironment } from 'src/domain/schemas/dotchi/dotchi-environment.schema';
 
 @Injectable()
 export class DotchiService {
-	constructor(
-		@InjectModel(Dotchi.name) private dotchiModel: Model<DotchiDocument>,
-		private readonly socketClient: SocketClient,
-	) { }
+  constructor(
+    @InjectModel(Dotchi.name) private dotchiModel: Model<DotchiDocument>,
+    private readonly socketClient: SocketClient,
+  ) {}
 
-	get(dotchi_id: string): Promise<Dotchi> {
-		return this.dotchiModel.findOne({ 'dotchi_id': dotchi_id }).exec()
-	}
+  get(dotchi_id: string): Promise<Dotchi> {
+    return this.dotchiModel.findOne({ dotchi_id: dotchi_id }).exec();
+  }
 
-	getAll(): Promise<Dotchi[]> {
-		return this.dotchiModel.find().exec()
-	}
+  getAll(): Promise<Dotchi[]> {
+    return this.dotchiModel.find().exec();
+  }
 
-	post(dotchi: Dotchi): Promise<Dotchi> {
-		const statistics: DotchiStatistics = { health: 100, happiness: 100 };
-		const environment: DotchiEnvironment = { min_temperature: 1, max_temperature: 1, min_humidity: 1, max_humidity: 1,
-		min_light_intensity: 1, max_light_intensity: 1, min_sound_intensity: 1, max_sound_intensity: 1 };
-		
-		dotchi = { dotchi_id: dotchi.dotchi_id, statistics: statistics, environment: environment, metrics: null };
-		return this.dotchiModel.create(dotchi)
-	}
+  post(dotchi: Dotchi): Promise<Dotchi> {
+    const statistics: DotchiStatistics = { health: 100, happiness: 100 };
+    const min_temperature = Math.random() * (10 - 0) + 0;
+    const max_temperature = Math.random() * (40 - 30) + 30;
+    const min_humidity = Math.random() * (40 - 30) + 30;
+    const max_humidity = Math.random() * (80 - 70) + 70;
+    const min_light_intensity = Math.random() * (25 - 15) + 15;
+    const max_light_intensity = Math.random() * (80 - 70) + 70;
+    const min_sound_intensity = Math.random() * (30 - 25) + 25;
+    const max_sound_intensity = Math.random() * (70 - 60) + 60;
 
-	updateTemperature(metric: MetricDTO): PromiseLike<Dotchi> {
-		return this.dotchiModel.findOneAndUpdate(
-			{ dotchi_id: metric.dotchi_id },
-			{ $set: { 'metrics.temperature': metric.value } },
-			{ new: true }
-		).then(dotchi => {
-			this.socketClient.server.emit('updatedMetrics/' + dotchi.dotchi_id, dotchi.metrics);
-			return dotchi;
-		});
-	}
+    const environment: DotchiEnvironment = {
+      min_temperature: min_temperature,
+      max_temperature: max_temperature,
+      min_humidity: min_humidity,
+      max_humidity: max_humidity,
+      min_light_intensity: min_light_intensity,
+      max_light_intensity: max_light_intensity,
+      min_sound_intensity: min_sound_intensity,
+      max_sound_intensity: max_sound_intensity,
+    };
 
-	updateHumidity(metric: MetricDTO): PromiseLike<Dotchi> {
-		return this.dotchiModel.findOneAndUpdate(
-			{ dotchi_id: metric.dotchi_id },
-			{ $set: { 'metrics.humidity': metric.value } },
-			{ new: true }
-		).then(dotchi => {
-			this.socketClient.server.emit('updatedMetrics/' + dotchi.dotchi_id, dotchi.metrics);
-			return dotchi;
-		});
-	}
+    dotchi = {
+      dotchi_id: dotchi.dotchi_id,
+      statistics: statistics,
+      environment: environment,
+      metrics: null,
+    };
+    return this.dotchiModel.create(dotchi);
+  }
 
-	updateLightIntensity(metric: MetricDTO): PromiseLike<Dotchi> {
-		return this.dotchiModel.findOneAndUpdate(
-			{ dotchi_id: metric.dotchi_id },
-			{ $set: { 'metrics.lightIntensity': metric.value } },
-			{ new: true }
-		).then(dotchi => {
-			this.socketClient.server.emit('updatedMetrics/' + dotchi.dotchi_id, dotchi.metrics);
-			return dotchi;
-		});
-	}
+  updateTemperature(metric: MetricDTO): PromiseLike<Dotchi> {
+    return this.dotchiModel
+      .findOneAndUpdate(
+        { dotchi_id: metric.dotchi_id },
+        { $set: { 'metrics.temperature': metric.value } },
+        { new: true },
+      )
+      .then((dotchi) => {
+        this.socketClient.server.emit(
+          'updatedMetrics/' + dotchi.dotchi_id,
+          dotchi.metrics,
+        );
+        return dotchi;
+      });
+  }
 
-	updateSoundIntensity(metric: MetricDTO): PromiseLike<Dotchi> {
-		return this.dotchiModel.findOneAndUpdate(
-			{ dotchi_id: metric.dotchi_id },
-			{ $set: { 'metrics.soundIntensity': metric.value } },
-			{ new: true }
-		).then(dotchi => {
-			this.socketClient.server.emit('updatedMetrics/' + dotchi.dotchi_id, dotchi.metrics);
-			return dotchi;
-		});
-	}
+  updateHumidity(metric: MetricDTO): PromiseLike<Dotchi> {
+    return this.dotchiModel
+      .findOneAndUpdate(
+        { dotchi_id: metric.dotchi_id },
+        { $set: { 'metrics.humidity': metric.value } },
+        { new: true },
+      )
+      .then((dotchi) => {
+        this.socketClient.server.emit(
+          'updatedMetrics/' + dotchi.dotchi_id,
+          dotchi.metrics,
+        );
+        return dotchi;
+      });
+  }
+
+  updateLightIntensity(metric: MetricDTO): PromiseLike<Dotchi> {
+    return this.dotchiModel
+      .findOneAndUpdate(
+        { dotchi_id: metric.dotchi_id },
+        { $set: { 'metrics.lightIntensity': metric.value } },
+        { new: true },
+      )
+      .then((dotchi) => {
+        this.socketClient.server.emit(
+          'updatedMetrics/' + dotchi.dotchi_id,
+          dotchi.metrics,
+        );
+        return dotchi;
+      });
+  }
+
+  updateSoundIntensity(metric: MetricDTO): PromiseLike<Dotchi> {
+    return this.dotchiModel
+      .findOneAndUpdate(
+        { dotchi_id: metric.dotchi_id },
+        { $set: { 'metrics.soundIntensity': metric.value } },
+        { new: true },
+      )
+      .then((dotchi) => {
+        this.socketClient.server.emit(
+          'updatedMetrics/' + dotchi.dotchi_id,
+          dotchi.metrics,
+        );
+        return dotchi;
+      });
+  }
 }
