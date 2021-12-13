@@ -98,7 +98,7 @@ export class DotchiService {
     return this.dotchiModel
       .findOneAndUpdate(
         { dotchi_id: metric.dotchi_id },
-        { $set: { 'metrics.lightIntensity': metric.value } },
+        { $set: { 'metrics.light_intensity': metric.value } },
         { new: true },
       )
       .then((dotchi) => {
@@ -114,7 +114,7 @@ export class DotchiService {
     return this.dotchiModel
       .findOneAndUpdate(
         { dotchi_id: metric.dotchi_id },
-        { $set: { 'metrics.soundIntensity': metric.value } },
+        { $set: { 'metrics.sound_intensity': metric.value } },
         { new: true },
       )
       .then((dotchi) => {
