@@ -75,6 +75,22 @@ export class StatisticsService {
             }
           }
         }
+
+        if (happinessValue < 0)
+        {
+          if (dotchis[i].statistics.happiness < Math.abs(happinessValue))
+          {
+            happinessValue = dotchis[i].statistics.happiness;
+          }
+        }
+        if (happinessValue > 0)
+        {
+          if (dotchis[i].statistics.happiness + happinessValue > 100)
+          {
+            happinessValue = 100 - dotchis[i].statistics.happiness;
+          }
+        }
+
         
         this.dotchiModel
           .findOneAndUpdate(
