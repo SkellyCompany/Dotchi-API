@@ -13,7 +13,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { LogService } from './services/log.service';
 import { LogController } from './entry/http/log.controller';
 import { DotchiController } from './entry/http/dotchi.controller';
-import { Statisticservice } from './services/statistics.service';
+import { StatisticsService } from './services/statistics.service';
 
 @Module({
   imports: [
@@ -43,6 +43,6 @@ import { Statisticservice } from './services/statistics.service';
     ]),
   ],
   controllers: [TemperatureMqttController, HumidityMqttController, LightIntensityMqttController, SoundIntensityMqttController, LogController, DotchiController],
-  providers: [AppGateway, DotchiService, LogService, Statisticservice, SocketClient],
+  providers: [AppGateway, DotchiService, LogService, StatisticsService, SocketClient],
 })
 export class AppModule { }
