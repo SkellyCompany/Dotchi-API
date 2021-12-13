@@ -80,7 +80,7 @@ export class StatisticsService {
         {
           if (dotchis[i].statistics.happiness < Math.abs(happinessValue))
           {
-            happinessValue = dotchis[i].statistics.happiness;
+            happinessValue = -dotchis[i].statistics.happiness;
           }
         }
         if (happinessValue > 0)
