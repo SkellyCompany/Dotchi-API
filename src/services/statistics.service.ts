@@ -12,6 +12,7 @@ export class Statisticservice {
   checkMetrics() {
     this.dotchiService.getAll().then((dotchis) => {
       for (let i = 0; i < dotchis.length; i++) {
+        if (dotchis[i].metrics) {
           if (dotchis[i].metrics.temperature) {
             if (
               dotchis[i].metrics.temperature <
@@ -51,8 +52,8 @@ export class Statisticservice {
               console.log('sad light');
             }
           }
+        }
       }
-      console.log('-----');
     });
   }
 }

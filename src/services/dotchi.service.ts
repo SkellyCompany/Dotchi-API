@@ -25,7 +25,7 @@ export class DotchiService {
     return this.dotchiModel.find().exec();
   }
 
-  post(dotchi: Dotchi): Promise<Dotchi> {
+  post(id: string): Promise<Dotchi> {
     const statistics: DotchiStatistics = { health: 100, happiness: 100 };
     const min_temperature = this.random(0, 10);
     const max_temperature = this.random(30, 40);
@@ -47,8 +47,8 @@ export class DotchiService {
       max_sound_intensity: max_sound_intensity,
     };
 
-    dotchi = {
-      dotchi_id: dotchi.dotchi_id,
+    const dotchi = {
+      dotchi_id: id,
       statistics: statistics,
       environment: environment,
       metrics: null,
@@ -57,7 +57,7 @@ export class DotchiService {
   }
 
   random(min: number, max: number): number {
-    return Math.random() * (max - min) + min;
+    return Math.floor(Math.random() * (max - min) + min);
   }
 
   updateTemperature(metric: MetricDTO): PromiseLike<Dotchi> {
