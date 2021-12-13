@@ -3,7 +3,7 @@ import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io'
 import { SocketClient } from 'src/clients/socket.client';
 
-@WebSocketGateway({ cors: true })
+@WebSocketGateway({ cors: true, allowEIO3: true })
 export class AppGateway implements OnGatewayConnection {
 	constructor(
 		private socketClient: SocketClient
