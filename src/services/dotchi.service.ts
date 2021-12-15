@@ -51,7 +51,19 @@ export class DotchiService {
       environment: environment,
       metrics: {},
     };
-    return this.dotchiModel.create(dotchi);
+    return this.dotchiModel.create(dotchi).then((dotchi) => {
+      const log: LogDTO = {
+        dotchi_id: dotchi.dotchi_id,
+        name: "Dotchi was born",
+        description: "It's a happy day, it's a celebration!",
+        timestamp: new Date().getSeconds(),
+        parameters: new Map<string, any>([
+          ["dotchi", dotchi]
+        ])
+      }
+      this.logService.create(log)
+      return dotchi
+    });
   }
 
   updateTemperature(metric: MetricDTO): PromiseLike<Dotchi> {
