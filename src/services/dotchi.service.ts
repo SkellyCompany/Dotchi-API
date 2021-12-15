@@ -1,3 +1,4 @@
+import { LogService } from './log.service';
 import { SocketClient } from './../clients/socket.client';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -9,12 +10,14 @@ import {
 } from 'src/domain/schemas/dotchi/dotchi.schema';
 import { DotchiStatistics } from 'src/domain/schemas/dotchi/dotchi-statistics.schema';
 import { DotchiEnvironment } from 'src/domain/schemas/dotchi/dotchi-environment.schema';
+import { LogDTO } from 'src/domain/dtos/log/log.dto';
 
 @Injectable()
 export class DotchiService {
   constructor(
     @InjectModel(Dotchi.name) private dotchiModel: Model<DotchiDocument>,
     private readonly socketClient: SocketClient,
+    private readonly logService: LogService
   ) { }
 
   get(dotchi_id: string): Promise<Dotchi> {
@@ -64,6 +67,19 @@ export class DotchiService {
           dotchi.metrics,
         );
         return dotchi;
+      })
+      .then((dotchi) => {
+        const log: LogDTO = {
+          dotchi_id: dotchi.dotchi_id,
+          name: "Metrics changed",
+          description: "Dotchi's metrics were changed based on its environment",
+          timestamp: new Date().getSeconds(),
+          parameters: new Map<string, any>([
+            ["metrics", dotchi.metrics]
+          ])
+        }
+        this.logService.create(log)
+        return dotchi
       });
   }
 
@@ -80,6 +96,19 @@ export class DotchiService {
           dotchi.metrics,
         );
         return dotchi;
+      })
+      .then((dotchi) => {
+        const log: LogDTO = {
+          dotchi_id: dotchi.dotchi_id,
+          name: "Metrics changed",
+          description: "Dotchi's metrics were changed based on its environment",
+          timestamp: new Date().getSeconds(),
+          parameters: new Map<string, any>([
+            ["metrics", dotchi.metrics]
+          ])
+        }
+        this.logService.create(log)
+        return dotchi
       });
   }
 
@@ -96,6 +125,19 @@ export class DotchiService {
           dotchi.metrics,
         );
         return dotchi;
+      })
+      .then((dotchi) => {
+        const log: LogDTO = {
+          dotchi_id: dotchi.dotchi_id,
+          name: "Metrics changed",
+          description: "Dotchi's metrics were changed based on its environment",
+          timestamp: new Date().getSeconds(),
+          parameters: new Map<string, any>([
+            ["metrics", dotchi.metrics]
+          ])
+        }
+        this.logService.create(log)
+        return dotchi
       });
   }
 
@@ -112,6 +154,19 @@ export class DotchiService {
           dotchi.metrics,
         );
         return dotchi;
+      })
+      .then((dotchi) => {
+        const log: LogDTO = {
+          dotchi_id: dotchi.dotchi_id,
+          name: "Metrics changed",
+          description: "Dotchi's metrics were changed based on its environment",
+          timestamp: new Date().getSeconds(),
+          parameters: new Map<string, any>([
+            ["metrics", dotchi.metrics]
+          ])
+        }
+        this.logService.create(log)
+        return dotchi
       });
   }
 }

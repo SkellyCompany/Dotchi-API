@@ -1,3 +1,4 @@
+import { LogDTO } from './../domain/dtos/log/log.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -6,6 +7,7 @@ import {
   Dotchi,
   DotchiDocument,
 } from 'src/domain/schemas/dotchi/dotchi.schema';
+import { LogService } from 'src/services/log.service';
 import { DotchiService } from './dotchi.service';
 
 @Injectable()
@@ -19,6 +21,7 @@ export class StatisticsService {
     @InjectModel(Dotchi.name) private dotchiModel: Model<DotchiDocument>,
     private readonly socketClient: SocketClient,
     private readonly dotchiService: DotchiService,
+    private readonly logService: LogService
   ) {
     setInterval(() => {
       this.updateStatistics();
@@ -149,6 +152,8 @@ export class StatisticsService {
               $set: {
                 'statistics.happiness':
                   dotchis[i].statistics.happiness + happinessValue,
+                'statistics.health':
+                  dotchis[i].statistics.health + healthValue,
               },
             },
             { new: true },
@@ -159,6 +164,19 @@ export class StatisticsService {
               dotchi.statistics,
             );
             return dotchi;
+          })
+          .then((dotchi) => {
+            const log: LogDTO = {
+              dotchi_id: dotchi.dotchi_id,
+              name: "Statistics changed",
+              description: "Dotchi's statistics were changed based on its environment",
+              timestamp: new Date().getSeconds(),
+              parameters: new Map<string, any>([
+                ["statistics", dotchi.statistics]
+              ])
+            }
+            this.logService.create(log)
+            return dotchi
           });
       }
     });
