@@ -21,7 +21,7 @@ export class StatisticsService {
     @InjectModel(Dotchi.name) private dotchiModel: Model<DotchiDocument>,
     private readonly socketClient: SocketClient,
     private readonly dotchiService: DotchiService,
-    private readonly logService: LogService
+    private readonly logService: LogService,
   ) {
     setInterval(() => {
       this.updateStatistics();
@@ -37,89 +37,95 @@ export class StatisticsService {
           if (dotchis[i].metrics.temperature) {
             if (
               dotchis[i].metrics.temperature <
-              dotchis[i].environment.min_temperature ||
+                dotchis[i].environment.min_temperature ||
               dotchis[i].metrics.temperature >
-              dotchis[i].environment.max_temperature
+                dotchis[i].environment.max_temperature
             ) {
               happinessValue -= this.happinesChangeStep;
               healthValue -= this.healthChangeStep;
             } else if (
               dotchis[i].metrics.temperature <
-              dotchis[i].environment.min_temperature + this.happinesDeltaTreshold ||
+                dotchis[i].environment.min_temperature +
+                  this.happinesDeltaTreshold ||
               dotchis[i].metrics.temperature >
-              dotchis[i].environment.max_temperature - this.happinesDeltaTreshold
+                dotchis[i].environment.max_temperature -
+                  this.happinesDeltaTreshold
             ) {
               happinessValue -= this.happinesChangeStep;
-              healthValue += this.healthChangeStep
+              healthValue += this.healthChangeStep;
             } else {
               happinessValue += this.happinesChangeStep;
-              healthValue += this.healthChangeStep
+              healthValue += this.healthChangeStep;
             }
           }
           if (dotchis[i].metrics.humidity) {
             if (
               dotchis[i].metrics.humidity <
-              dotchis[i].environment.min_humidity ||
-              dotchis[i].metrics.humidity >
-              dotchis[i].environment.max_humidity
+                dotchis[i].environment.min_humidity ||
+              dotchis[i].metrics.humidity > dotchis[i].environment.max_humidity
             ) {
               happinessValue -= this.happinesChangeStep;
               healthValue -= this.healthChangeStep;
             } else if (
               dotchis[i].metrics.humidity <
-              dotchis[i].environment.min_humidity + this.happinesDeltaTreshold ||
+                dotchis[i].environment.min_humidity +
+                  this.happinesDeltaTreshold ||
               dotchis[i].metrics.humidity >
-              dotchis[i].environment.max_humidity - this.happinesDeltaTreshold
+                dotchis[i].environment.max_humidity - this.happinesDeltaTreshold
             ) {
               happinessValue -= this.happinesChangeStep;
-              healthValue += this.healthChangeStep
+              healthValue += this.healthChangeStep;
             } else {
               happinessValue += this.happinesChangeStep;
-              healthValue += this.healthChangeStep
+              healthValue += this.healthChangeStep;
             }
           }
           if (dotchis[i].metrics.sound_intensity) {
             if (
               dotchis[i].metrics.sound_intensity <
-              dotchis[i].environment.min_sound_intensity ||
+                dotchis[i].environment.min_sound_intensity ||
               dotchis[i].metrics.sound_intensity >
-              dotchis[i].environment.max_sound_intensity
+                dotchis[i].environment.max_sound_intensity
             ) {
               happinessValue -= this.happinesChangeStep;
               healthValue -= this.healthChangeStep;
             } else if (
               dotchis[i].metrics.sound_intensity <
-              dotchis[i].environment.min_sound_intensity + this.happinesDeltaTreshold ||
+                dotchis[i].environment.min_sound_intensity +
+                  this.happinesDeltaTreshold ||
               dotchis[i].metrics.sound_intensity >
-              dotchis[i].environment.max_sound_intensity - this.happinesDeltaTreshold
+                dotchis[i].environment.max_sound_intensity -
+                  this.happinesDeltaTreshold
             ) {
               happinessValue -= this.happinesChangeStep;
-              healthValue += this.healthChangeStep
+              healthValue += this.healthChangeStep;
             } else {
               happinessValue += this.happinesChangeStep;
-              healthValue += this.healthChangeStep
+              healthValue += this.healthChangeStep;
             }
           }
           if (dotchis[i].metrics.light_intensity) {
             if (
               dotchis[i].metrics.light_intensity <
-              dotchis[i].environment.min_light_intensity ||
+                dotchis[i].environment.min_light_intensity ||
               dotchis[i].metrics.light_intensity >
-              dotchis[i].environment.max_light_intensity
+                dotchis[i].environment.max_light_intensity
             ) {
               happinessValue -= this.happinesChangeStep;
               healthValue -= this.healthChangeStep;
             } else if (
               dotchis[i].metrics.light_intensity <
-              dotchis[i].environment.min_light_intensity + this.happinesDeltaTreshold ||
+                dotchis[i].environment.min_light_intensity +
+                  this.happinesDeltaTreshold ||
               dotchis[i].metrics.light_intensity >
-              dotchis[i].environment.max_light_intensity - this.happinesDeltaTreshold
+                dotchis[i].environment.max_light_intensity -
+                  this.happinesDeltaTreshold
             ) {
               happinessValue -= this.happinesChangeStep;
-              healthValue += this.healthChangeStep
+              healthValue += this.healthChangeStep;
             } else {
               happinessValue += this.happinesChangeStep;
-              healthValue += this.healthChangeStep
+              healthValue += this.healthChangeStep;
             }
           }
         }
@@ -144,40 +150,53 @@ export class StatisticsService {
           }
         }
 
-
-        this.dotchiModel
-          .findOneAndUpdate(
-            { dotchi_id: dotchis[i].dotchi_id },
-            {
-              $set: {
-                'statistics.happiness':
-                  dotchis[i].statistics.happiness + happinessValue,
-                'statistics.health':
-                  dotchis[i].statistics.health + healthValue,
-              },
-            },
-            { new: true },
+        if (
+          !(
+            dotchis[i].statistics.happiness == 0 &&
+            happinessValue <= 0 ||
+            dotchis[i].statistics.happiness == 100 &&
+            happinessValue >= 0 &&
+            dotchis[i].statistics.health == 0 &&
+            healthValue <= 0 ||
+            dotchis[i].statistics.health == 100 &&
+            healthValue >= 0
           )
-          .then((dotchi) => {
-            this.socketClient.server.emit(
-              'updatedStatistics/' + dotchi.dotchi_id,
-              dotchi.statistics,
-            );
-            return dotchi;
-          })
-          .then((dotchi) => {
-            const log: LogDTO = {
-              dotchi_id: dotchi.dotchi_id,
-              name: "Statistics changed",
-              description: "Dotchi's statistics were changed based on its environment",
-              timestamp: new Date().getSeconds(),
-              parameters: new Map<string, any>([
-                ["statistics", dotchi.statistics]
-              ])
-            }
-            this.logService.create(log)
-            return dotchi
-          });
+        ) {
+          this.dotchiModel
+            .findOneAndUpdate(
+              { dotchi_id: dotchis[i].dotchi_id },
+              {
+                $set: {
+                  'statistics.happiness':
+                    dotchis[i].statistics.happiness + happinessValue,
+                  'statistics.health':
+                    dotchis[i].statistics.health + healthValue,
+                },
+              },
+              { new: true },
+            )
+            .then((dotchi) => {
+              this.socketClient.server.emit(
+                'updatedStatistics/' + dotchi.dotchi_id,
+                dotchi.statistics,
+              );
+              return dotchi;
+            })
+            .then((dotchi) => {
+              const log: LogDTO = {
+                dotchi_id: dotchi.dotchi_id,
+                name: 'Statistics changed',
+                description:
+                  "Dotchi's statistics were changed based on its environment",
+                timestamp: new Date().getSeconds(),
+                parameters: new Map<string, any>([
+                  ['statistics', dotchi.statistics],
+                ]),
+              };
+              this.logService.create(log);
+              return dotchi;
+            });
+        }
       }
     });
   }
