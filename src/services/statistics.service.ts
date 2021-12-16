@@ -153,11 +153,11 @@ export class StatisticsService {
         if (
           !(
             dotchis[i].statistics.happiness == 0 &&
-            happinessValue <= 0 ||
+            happinessValue <= 0 &&
             dotchis[i].statistics.happiness == 100 &&
             happinessValue >= 0 &&
             dotchis[i].statistics.health == 0 &&
-            healthValue <= 0 ||
+            healthValue <= 0 &&
             dotchis[i].statistics.health == 100 &&
             healthValue >= 0
           )
