@@ -18,7 +18,7 @@ export class Log {
 	parameters: Map<string, string>;
 
 	@Prop()
-	timestamp: number;
+	timestamp: string;
 }
 
 export const LogSchema = SchemaFactory.createForClass(Log);
