@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 export type LogDocument = Log & Document;
 
-@Schema({ collection: 'logs', timestamps: true })
+@Schema({ collection: 'logs'})
 export class Log {
 	@Prop()
 	dotchi_id: string;
