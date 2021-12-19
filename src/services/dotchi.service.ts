@@ -56,7 +56,7 @@ export class DotchiService {
         dotchi_id: dotchi.dotchi_id,
         name: "Dotchi was born",
         description: "It's a happy day, it's a celebration!",
-        timestamp: Date.now(),
+        timestamp: Math.floor(Date.now()/1000),
         parameters: new Map<string, any>([
           ["dotchi", dotchi]
         ])
@@ -85,7 +85,7 @@ export class DotchiService {
           dotchi_id: dotchi.dotchi_id,
           name: "Metrics changed",
           description: "Dotchi's metrics were changed based on its environment",
-          timestamp: Date.now(),
+          timestamp: Math.floor(Date.now()/1000),
           parameters: new Map<string, any>([
             ["metrics", dotchi.metrics]
           ])
@@ -114,7 +114,7 @@ export class DotchiService {
           dotchi_id: dotchi.dotchi_id,
           name: "Metrics changed",
           description: "Dotchi's metrics were changed based on its environment",
-          timestamp: Date.now(),
+          timestamp: Math.floor(Date.now()/1000),
           parameters: new Map<string, any>([
             ["metrics", dotchi.metrics]
           ])
@@ -143,7 +143,7 @@ export class DotchiService {
           dotchi_id: dotchi.dotchi_id,
           name: "Metrics changed",
           description: "Dotchi's metrics were changed based on its environment",
-          timestamp: Date.now(),
+          timestamp: Math.floor(Date.now()/1000),
           parameters: new Map<string, any>([
             ["metrics", dotchi.metrics]
           ])
@@ -172,7 +172,7 @@ export class DotchiService {
           dotchi_id: dotchi.dotchi_id,
           name: "Metrics changed",
           description: "Dotchi's metrics were changed based on its environment",
-          timestamp: Date.now(),
+          timestamp: Math.floor(Date.now()/1000),
           parameters: new Map<string, any>([
             ["metrics", dotchi.metrics]
           ])

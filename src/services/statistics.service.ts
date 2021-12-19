@@ -186,7 +186,7 @@ export class StatisticsService {
                 name: 'Statistics changed',
                 description:
                   "Dotchi's statistics were changed based on its environment",
-                timestamp: new Date().getSeconds(),
+                timestamp: Math.floor(Date.now()/1000),
                 parameters: new Map<string, any>([
                   ['statistics', dotchi.statistics],
                 ]),
