@@ -9,7 +9,7 @@ export class Log {
 	dotchi_id: string;
 
 	@Prop()
-	name: number;
+	name: string;
 
 	@Prop()
 	description: string;
@@ -18,7 +18,7 @@ export class Log {
 	parameters: Map<string, string>;
 
 	@Prop()
-	timestamp: string;
+	timestamp: number;
 }
 
 export const LogSchema = SchemaFactory.createForClass(Log);
