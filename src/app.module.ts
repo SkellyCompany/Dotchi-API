@@ -1,10 +1,8 @@
+import { MetricsService } from './services/metrics.service';
+import { MetricsMqttController } from './entry/mqtt/metrics.mqtt.controller';
 import { AppGateway } from './entry/socket/app.gateway';
 import { DotchiService } from './services/dotchi.service';
 import { SocketClient } from './clients/socket.client';
-import { SoundIntensityMqttController } from './entry/mqtt/sound-intensity.mqtt.controller';
-import { LightIntensityMqttController } from './entry/mqtt/light-intensity.mqtt.controller';
-import { HumidityMqttController } from './entry/mqtt/humidity.mqtt.controller';
-import { TemperatureMqttController } from './entry/mqtt/temperature.mqtt.controller';
 import { Dotchi, DotchiSchema } from './domain/schemas/dotchi/dotchi.schema';
 import { Log, LogSchema } from './domain/schemas/log/log.schema';
 import { Module } from '@nestjs/common';
@@ -42,7 +40,7 @@ import { StatisticsService } from './services/statistics.service';
       },
     ]),
   ],
-  controllers: [TemperatureMqttController, HumidityMqttController, LightIntensityMqttController, SoundIntensityMqttController, LogController, DotchiController],
-  providers: [AppGateway, DotchiService, LogService, StatisticsService, SocketClient],
+  controllers: [MetricsMqttController, LogController, DotchiController],
+  providers: [AppGateway, DotchiService, LogService, StatisticsService, SocketClient, MetricsService],
 })
 export class AppModule { }

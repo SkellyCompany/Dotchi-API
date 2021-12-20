@@ -1,3 +1,4 @@
+import { CreateDotchiDTO } from './../../domain/dtos/dotchi/create-dotchi.dto';
 import { Dotchi } from 'src/domain/schemas/dotchi/dotchi.schema';
 import { DotchiService } from '../../services/dotchi.service';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
@@ -12,8 +13,13 @@ export class DotchiController {
 		return this.dotchiService.get(id)
 	}
 
-	@Post('/:id')
-	post(@Param('id') id): Promise<Dotchi> {
-		return this.dotchiService.post(id)
+	@Get('/mother/:id')
+	getByMother(@Param('id') id): Promise<Dotchi> {
+		return this.dotchiService.getByMother(id)
+	}
+
+	@Post()
+	post(@Body() dto: CreateDotchiDTO): Promise<Dotchi> {
+		return this.dotchiService.post(dto)
 	}
 }

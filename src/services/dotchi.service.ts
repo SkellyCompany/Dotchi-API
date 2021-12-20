@@ -1,16 +1,15 @@
+import { CreateDotchiDTO } from './../domain/dtos/dotchi/create-dotchi.dto';
 import { LogService } from './log.service';
 import { SocketClient } from './../clients/socket.client';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { MetricDTO } from 'src/domain/dtos/metric/metric.dto';
 import {
   Dotchi,
   DotchiDocument,
 } from 'src/domain/schemas/dotchi/dotchi.schema';
 import { DotchiStatistics } from 'src/domain/schemas/dotchi/dotchi-statistics.schema';
 import { DotchiEnvironment } from 'src/domain/schemas/dotchi/dotchi-environment.schema';
-import { LogDTO } from 'src/domain/dtos/log/log.dto';
 
 @Injectable()
 export class DotchiService {
@@ -24,11 +23,15 @@ export class DotchiService {
     return this.dotchiModel.findOne({ dotchi_id: dotchi_id }).exec();
   }
 
+  getByMother(id: string): Promise<Dotchi> {
+    return this.dotchiModel.findOne({ mother_id: id }).exec();
+  }
+
   getAll(): Promise<Dotchi[]> {
     return this.dotchiModel.find().exec();
   }
 
-  post(id: string): Promise<Dotchi> {
+  post(dto: CreateDotchiDTO): Promise<Dotchi> {
     function random(min: number, max: number): number {
       return Math.floor(Math.random() * (max - min) + min);
     }
@@ -46,139 +49,12 @@ export class DotchiService {
     };
 
     const dotchi = {
-      dotchi_id: id,
+      dotchi_id: dto.dotchi_id,
+      mother_id: dto.mother_id,
       statistics: statistics,
       environment: environment,
       metrics: {},
     };
-    return this.dotchiModel.create(dotchi).then((dotchi) => {
-      const log: LogDTO = {
-        dotchi_id: dotchi.dotchi_id,
-        name: "Dotchi was born",
-        description: "It's a happy day, it's a celebration!",
-        timestamp: Math.floor(Date.now()/1000),
-        parameters: new Map<string, any>([
-          ["dotchi", dotchi]
-        ])
-      }
-      this.logService.create(log)
-      return dotchi
-    });
-  }
-
-  updateTemperature(metric: MetricDTO): PromiseLike<Dotchi> {
-    return this.dotchiModel
-      .findOneAndUpdate(
-        { dotchi_id: metric.dotchi_id },
-        { $set: { 'metrics.temperature': metric.value } },
-        { new: true },
-      )
-      .then((dotchi) => {
-        this.socketClient.server.emit(
-          'updatedMetrics/' + dotchi.dotchi_id,
-          dotchi.metrics,
-        );
-        return dotchi;
-      })
-      .then((dotchi) => {
-        const log: LogDTO = {
-          dotchi_id: dotchi.dotchi_id,
-          name: "Metrics changed",
-          description: "Dotchi's metrics were changed based on its environment",
-          timestamp: Math.floor(Date.now()/1000),
-          parameters: new Map<string, any>([
-            ["metrics", dotchi.metrics]
-          ])
-        }
-        this.logService.create(log)
-        return dotchi
-      });
-  }
-
-  updateHumidity(metric: MetricDTO): PromiseLike<Dotchi> {
-    return this.dotchiModel
-      .findOneAndUpdate(
-        { dotchi_id: metric.dotchi_id },
-        { $set: { 'metrics.humidity': metric.value } },
-        { new: true },
-      )
-      .then((dotchi) => {
-        this.socketClient.server.emit(
-          'updatedMetrics/' + dotchi.dotchi_id,
-          dotchi.metrics,
-        );
-        return dotchi;
-      })
-      .then((dotchi) => {
-        const log: LogDTO = {
-          dotchi_id: dotchi.dotchi_id,
-          name: "Metrics changed",
-          description: "Dotchi's metrics were changed based on its environment",
-          timestamp: Math.floor(Date.now()/1000),
-          parameters: new Map<string, any>([
-            ["metrics", dotchi.metrics]
-          ])
-        }
-        this.logService.create(log)
-        return dotchi
-      });
-  }
-
-  updateLightIntensity(metric: MetricDTO): PromiseLike<Dotchi> {
-    return this.dotchiModel
-      .findOneAndUpdate(
-        { dotchi_id: metric.dotchi_id },
-        { $set: { 'metrics.light_intensity': metric.value } },
-        { new: true },
-      )
-      .then((dotchi) => {
-        this.socketClient.server.emit(
-          'updatedMetrics/' + dotchi.dotchi_id,
-          dotchi.metrics,
-        );
-        return dotchi;
-      })
-      .then((dotchi) => {
-        const log: LogDTO = {
-          dotchi_id: dotchi.dotchi_id,
-          name: "Metrics changed",
-          description: "Dotchi's metrics were changed based on its environment",
-          timestamp: Math.floor(Date.now()/1000),
-          parameters: new Map<string, any>([
-            ["metrics", dotchi.metrics]
-          ])
-        }
-        this.logService.create(log)
-        return dotchi
-      });
-  }
-
-  updateSoundIntensity(metric: MetricDTO): PromiseLike<Dotchi> {
-    return this.dotchiModel
-      .findOneAndUpdate(
-        { dotchi_id: metric.dotchi_id },
-        { $set: { 'metrics.sound_intensity': metric.value } },
-        { new: true },
-      )
-      .then((dotchi) => {
-        this.socketClient.server.emit(
-          'updatedMetrics/' + dotchi.dotchi_id,
-          dotchi.metrics,
-        );
-        return dotchi;
-      })
-      .then((dotchi) => {
-        const log: LogDTO = {
-          dotchi_id: dotchi.dotchi_id,
-          name: "Metrics changed",
-          description: "Dotchi's metrics were changed based on its environment",
-          timestamp: Math.floor(Date.now()/1000),
-          parameters: new Map<string, any>([
-            ["metrics", dotchi.metrics]
-          ])
-        }
-        this.logService.create(log)
-        return dotchi
-      });
+    return this.dotchiModel.create(dotchi);
   }
 }

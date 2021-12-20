@@ -11,6 +11,9 @@ export class Dotchi {
 	@Prop()
 	dotchi_id: string;
 
+	@Prop()
+	mother_id: string;
+
 	@Prop({ type: DotchiStatisticsSchema })
 	statistics: DotchiStatistics
 
