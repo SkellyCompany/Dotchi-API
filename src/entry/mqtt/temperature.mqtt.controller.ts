@@ -18,6 +18,7 @@ export class TemperatureMqttController {
 
 	@MessagePattern('temperature')
 	update(@Payload() metric: MetricDTO, @Ctx() context: MqttContext) {
+		console.log("TEMP")
 		this.dotchiService.updateTemperature(metric);
 	}
 }

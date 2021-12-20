@@ -18,6 +18,7 @@ export class HumidityMqttController {
 
 	@MessagePattern('humidity')
 	update(@Payload() metric: MetricDTO, @Ctx() context: MqttContext) {
+		console.log("HUMI")
 		this.dotchiService.updateHumidity(metric);
 	}
 }

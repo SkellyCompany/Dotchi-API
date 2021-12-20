@@ -8,6 +8,7 @@ export class LogController {
 
 	@Get('/:id')
 	getAll(@Param('id') id): Promise<Log[]> {
+		console.log("LOG")
 		return this.logService.getAll(id)
 	}
 }

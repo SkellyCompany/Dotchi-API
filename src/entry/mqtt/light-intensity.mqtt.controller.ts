@@ -18,6 +18,7 @@ export class LightIntensityMqttController {
 
 	@MessagePattern('lightIntensity')
 	update(@Payload() metric: MetricDTO, @Ctx() context: MqttContext) {
+		console.log("LIGHT")
 		this.dotchiService.updateLightIntensity(metric);
 	}
 }
