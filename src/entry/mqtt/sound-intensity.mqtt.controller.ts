@@ -18,7 +18,6 @@ export class SoundIntensityMqttController {
 
 	@MessagePattern('soundIntensity')
 	update(@Payload() metric: MetricDTO, @Ctx() context: MqttContext) {
-		console.log("SOUND")
 		this.dotchiService.updateSoundIntensity(metric);
 	}
 }
