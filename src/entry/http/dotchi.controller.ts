@@ -9,9 +9,6 @@ export class DotchiController {
 
 	@Get('/:id')
 	get(@Param('id') id): Promise<Dotchi> {
-		this.dotchiService.get(id);
-		const m: MetricDTO = { dotchi_id: "C4:5B:BE:8C:60:F0", value: 20}
-		this.dotchiService.updateLightIntensity(m);
 		return this.dotchiService.get(id)
 	}
 
