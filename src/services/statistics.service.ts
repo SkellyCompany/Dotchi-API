@@ -150,16 +150,8 @@ export class StatisticsService {
           }
         }
 
-        if (
-          !(
-            (dotchis[i].statistics.happiness == 0 && happinessValue <= 0) ||
-            (dotchis[i].statistics.happiness == 100 && happinessValue >= 0)
-          ) ||
-          !(
-            (dotchis[i].statistics.health == 0 && healthValue <= 0) ||
-            (dotchis[i].statistics.health == 100 && healthValue >= 0)
-          )
-        ) {
+        if (dotchis[i].statistics.happiness != dotchis[i].statistics.happiness + happinessValue
+          || dotchis[i].statistics.health != dotchis[i].statistics.health + healthValue) {
           this.dotchiModel
             .findOneAndUpdate(
               { dotchi_id: dotchis[i].dotchi_id },
