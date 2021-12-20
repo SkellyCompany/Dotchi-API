@@ -166,9 +166,9 @@ export class StatisticsService {
               {
                 $set: {
                   'statistics.happiness':
-                    dotchis[i].statistics.happiness + happinessValue,
+                    (dotchis[i].statistics.happiness + happinessValue).toFixed(1),
                   'statistics.health':
-                    dotchis[i].statistics.health + healthValue,
+                    (dotchis[i].statistics.health + healthValue).toFixed(1),
                 },
               },
               { new: true },
